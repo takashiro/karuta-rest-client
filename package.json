@@ -1,6 +1,6 @@
 {
   "name": "@karuta/rest-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Client to communicate with RESTful APIs",
   "main": "dist",
   "scripts": {
