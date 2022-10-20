@@ -34,6 +34,7 @@ module.exports = {
 			'WithStatement',
 		],
     'no-tabs': 'off',
+		'no-unused-vars': 'off',
   },
 	settings: {
 		'import/resolver': {

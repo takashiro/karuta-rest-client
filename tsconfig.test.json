@@ -1,10 +1,14 @@
 {
 	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true
+	},
 	"include": [
 		".eslintrc.js",
 		"jest.config.js",
 		"webpack.config.ts",
 		"src",
-		"test"
+		"test",
+		"test/.eslintrc.js"
 	]
 }
