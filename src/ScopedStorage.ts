@@ -8,15 +8,19 @@ export default class ScopedStorage implements Storage {
 		this.api = api;
 	}
 
-	get length(): number {
+	getApi(): Storage {
+		return this.api;
+	}
+
+	get length(): number { // eslint-disable-line class-methods-use-this
 		throw new Error('Method not implemented');
 	}
 
-	key(): string | null {
+	key(): string | null { // eslint-disable-line class-methods-use-this
 		throw new Error('Method not implemented.');
 	}
 
-	clear(): void {
+	clear(): void { // eslint-disable-line class-methods-use-this
 		throw new Error('Method not implemented.');
 	}
 

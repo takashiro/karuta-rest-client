@@ -1,6 +1,19 @@
 import Client from './Client';
+import ScopedStorage from './ScopedStorage';
 
 export type PropertyParser<PropertyType> = (raw: string) => PropertyType;
+
+interface ContextOptions {
+	/**
+	 * Session Storage or Local Storage
+	 */
+	storage: Storage;
+
+	/**
+	 * Unique ID used as a prefix in storage
+	 */
+	id: string;
+}
 
 /**
  * A client context.
@@ -9,19 +22,18 @@ export type PropertyParser<PropertyType> = (raw: string) => PropertyType;
 export default class ClientContext {
 	protected readonly client: Client;
 
-	protected readonly storage: Storage;
-
-	protected readonly id: string;
+	protected readonly storage?: ScopedStorage;
 
 	/**
 	 * Create a client context.
 	 * @param client RESTful client to send HTTP requests.
-	 * @param id A unique ID to save data into local storage.
+	 * @param options Extra options
 	 */
-	constructor(client: Client, storage: Storage, id: string) {
+	constructor(client: Client, options?: ContextOptions) {
 		this.client = client;
-		this.storage = storage;
-		this.id = id;
+		if (options) {
+			this.storage = new ScopedStorage(options.id, options.storage);
+		}
 	}
 
 	/**
@@ -40,9 +52,11 @@ export default class ClientContext {
 	 * @param value property value
 	 */
 	saveItem(name: string, value: unknown): void {
-		const key = this.getItemKey(name);
+		if (!this.storage) {
+			throw new Error('The context does not support storage.');
+		}
 		const data = typeof value === 'string' ? value : JSON.stringify(value);
-		this.storage.setItem(key, data);
+		this.storage.setItem(name, data);
 	}
 
 	/**
@@ -50,8 +64,10 @@ export default class ClientContext {
 	 * @param name property name
 	 */
 	removeItem(name: string): void {
-		const itemKey = this.getItemKey(name);
-		this.storage.removeItem(itemKey);
+		if (!this.storage) {
+			throw new Error('The context does not support storage.');
+		}
+		this.storage.removeItem(name);
 	}
 
 	/**
@@ -60,15 +76,13 @@ export default class ClientContext {
 	 * @returns property value
 	 */
 	readRawItem(name: string): string {
-		const key = this.getItemKey(name);
-		const raw = this.storage.getItem(key);
+		if (!this.storage) {
+			throw new Error('The context does not support storage.');
+		}
+		const raw = this.storage.getItem(name);
 		if (raw === null) {
-			throw new Error(`Failed to read ${key} from local storage.`);
+			throw new Error(`Failed to read ${name} from local storage.`);
 		}
 		return raw;
-	}
-
-	protected getItemKey(propertyKey: string): string {
-		return `${this.id}-${propertyKey}`;
 	}
 }

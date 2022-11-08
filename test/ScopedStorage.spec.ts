@@ -26,6 +26,10 @@ it('cannot clear items', () => {
 	expect(() => storage.clear()).toThrowError('Method not implemented');
 });
 
+it('returns underlying API', () => {
+	expect(storage.getApi()).toBe(api);
+});
+
 it('saves an item', () => {
 	storage.setItem('k', 'v');
 	expect(api.setItem).toBeCalledWith('abc-k', 'v');
