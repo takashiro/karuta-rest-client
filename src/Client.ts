@@ -1,5 +1,14 @@
 export type FetchApi = typeof window.fetch;
 
+export const enum HttpMethod {
+	Get = 'GET',
+	Post = 'POST',
+	Delete = 'DELETE',
+	Head = 'HEAD',
+	Put = 'PUT',
+	Patch = 'PATCH',
+}
+
 /**
  * A RESTful Client.
  */
@@ -25,7 +34,7 @@ export default class Client {
    * @returns HTTP response
    */
 	get(context?: string, options?: RequestInit): Promise<Response> {
-		return this.request('GET', context, options);
+		return this.request(HttpMethod.Get, context, options);
 	}
 
   /**
@@ -35,7 +44,7 @@ export default class Client {
    * @returns HTTP response
    */
 	post(context?: string, options?: RequestInit): Promise<Response> {
-		return this.request('POST', context, options);
+		return this.request(HttpMethod.Post, context, options);
 	}
 
   /**
@@ -44,8 +53,8 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	async delete(context?: string, options?: RequestInit): Promise<Response> {
-		return this.request('DELETE', context, options);
+	delete(context?: string, options?: RequestInit): Promise<Response> {
+		return this.request(HttpMethod.Delete, context, options);
 	}
 
   /**
@@ -55,7 +64,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	request(method: string, context?: string, options?: RequestInit): Promise<Response> {
+	request(method: HttpMethod, context?: string, options?: RequestInit): Promise<Response> {
 		const url = this.getContext(context);
 		const init: RequestInit = {
 			...options,

@@ -33,6 +33,7 @@ module.exports = {
 			'error',
 			'WithStatement',
 		],
+		'no-shadow': 'off',
     'no-tabs': 'off',
 		'no-unused-vars': 'off',
   },
