@@ -37,3 +37,18 @@ it('derives a child client', async () => {
 	await room.get('status');
 	expect(fetch).toBeCalledWith('http://example.com/api/room/1/status', { method: 'GET' });
 });
+
+it('gets root context by default', async () => {
+	await client.get();
+	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'GET' });
+});
+
+it('posts root context by default', async () => {
+	await client.post();
+	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'POST' });
+});
+
+it('delete root context by default', async () => {
+	await client.delete();
+	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'DELETE' });
+});

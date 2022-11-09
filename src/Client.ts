@@ -24,7 +24,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	get(context: string, options?: RequestInit): Promise<Response> {
+	get(context?: string, options?: RequestInit): Promise<Response> {
 		return this.request('GET', context, options);
 	}
 
@@ -34,7 +34,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	post(context: string, options?: RequestInit): Promise<Response> {
+	post(context?: string, options?: RequestInit): Promise<Response> {
 		return this.request('POST', context, options);
 	}
 
@@ -44,7 +44,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	async delete(context: string, options?: RequestInit): Promise<Response> {
+	async delete(context?: string, options?: RequestInit): Promise<Response> {
 		return this.request('DELETE', context, options);
 	}
 
@@ -55,8 +55,8 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	request(method: string, context: string, options?: RequestInit): Promise<Response> {
-		const url = `${this.rootUrl}/${context}`;
+	request(method: string, context?: string, options?: RequestInit): Promise<Response> {
+		const url = this.getContext(context);
 		const init: RequestInit = {
 			...options,
 			method,
@@ -70,6 +70,13 @@ export default class Client {
    * @returns A child client
    */
 	derive(context: string): Client {
-		return new Client(`${this.rootUrl}/${context}`, this.fetch);
+		return new Client(this.getContext(context), this.fetch);
 	}
+
+  protected getContext(context?: string): string {
+    if (context) {
+      return `${this.rootUrl}/${context}`;
+    }
+    return this.rootUrl;
+  }
 }
