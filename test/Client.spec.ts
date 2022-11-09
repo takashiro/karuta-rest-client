@@ -43,6 +43,11 @@ it('gets root context by default', async () => {
 	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'GET' });
 });
 
+it('gets meta of root context by default', async () => {
+	await client.head();
+	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'HEAD' });
+});
+
 it('posts root context by default', async () => {
 	await client.post();
 	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'POST' });
@@ -51,4 +56,14 @@ it('posts root context by default', async () => {
 it('delete root context by default', async () => {
 	await client.delete();
 	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'DELETE' });
+});
+
+it('puts root context by default', async () => {
+	await client.put();
+	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'PUT' });
+});
+
+it('patches root context by default', async () => {
+	await client.patch();
+	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'PATCH' });
 });

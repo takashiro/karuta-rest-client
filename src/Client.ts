@@ -38,6 +38,16 @@ export default class Client {
 	}
 
   /**
+   * Send a HEAD request.
+   * @param context context path
+   * @param options request options
+   * @returns HTTP response
+   */
+	head(context?: string, options?: RequestInit): Promise<Response> {
+		return this.request(HttpMethod.Head, context, options);
+	}
+
+  /**
    * Send a POST request.
    * @param context context path
    * @param options request options
@@ -55,6 +65,26 @@ export default class Client {
    */
 	delete(context?: string, options?: RequestInit): Promise<Response> {
 		return this.request(HttpMethod.Delete, context, options);
+	}
+
+  /**
+   * Send a PUT request.
+   * @param context context path
+   * @param options request options
+   * @returns HTTP response
+   */
+	put(context?: string, options?: RequestInit): Promise<Response> {
+		return this.request(HttpMethod.Put, context, options);
+	}
+
+  /**
+   * Send a Patch request.
+   * @param context context path
+   * @param options request options
+   * @returns HTTP response
+   */
+	patch(context?: string, options?: RequestInit): Promise<Response> {
+		return this.request(HttpMethod.Patch, context, options);
 	}
 
   /**
