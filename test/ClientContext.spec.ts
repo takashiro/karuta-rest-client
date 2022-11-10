@@ -6,7 +6,6 @@ import {
 
 import Client, { FetchApi } from '../src/Client';
 import ClientContext from '../src/ClientContext';
-import ScopedStorage from '../src/ScopedStorage';
 
 jest.mock('../src/Client');
 jest.mock('../src/ScopedStorage');
@@ -16,15 +15,17 @@ const MockedClient = jest.mocked(Client);
 const fetch = jest.fn();
 const client = new MockedClient('http://local', fetch as unknown as FetchApi);
 
-const context = new ClientContext(client, {
-	id: 'me',
-	storage: {
-		getItem: jest.fn(),
-		setItem: jest.fn(),
-		removeItem: jest.fn(),
-	} as unknown as Storage,
+const context = new ClientContext(client);
+const storage = {
+	getItem: jest.fn(),
+	setItem: jest.fn(),
+	removeItem: jest.fn(),
+} as unknown as jest.Mocked<Storage>;
+context.setStorage(storage);
+
+it('can return its storage', () => {
+	expect(context.getStorage()).toBe(storage);
 });
-const storage = Reflect.get(context, 'storage') as jest.Mocked<ScopedStorage>;
 
 it('reads a non-existing property from local storage', () => {
 	storage.getItem.mockReturnValueOnce(null);

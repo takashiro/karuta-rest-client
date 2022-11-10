@@ -1,19 +1,6 @@
 import Client from './Client';
-import ScopedStorage from './ScopedStorage';
 
 export type PropertyParser<PropertyType> = (raw: string) => PropertyType;
-
-interface ContextOptions {
-	/**
-	 * Session Storage or Local Storage
-	 */
-	storage: Storage;
-
-	/**
-	 * Unique ID used as a prefix in storage
-	 */
-	id: string;
-}
 
 /**
  * A client context.
@@ -22,18 +9,29 @@ interface ContextOptions {
 export default class ClientContext {
 	protected readonly client: Client;
 
-	protected readonly storage?: ScopedStorage;
+	protected storage?: Storage;
 
 	/**
 	 * Create a client context.
 	 * @param client RESTful client to send HTTP requests.
-	 * @param options Extra options
 	 */
-	constructor(client: Client, options?: ContextOptions) {
+	constructor(client: Client) {
 		this.client = client;
-		if (options) {
-			this.storage = new ScopedStorage(options.id, options.storage);
-		}
+	}
+
+	/**
+	 * @returns local storage to save cache.
+	 */
+	getStorage(): Storage | undefined {
+		return this.storage;
+	}
+
+	/**
+	 * Sets a storage to save cache.
+	 * @param storage data storage
+	 */
+	setStorage(storage: Storage) {
+		this.storage = storage;
 	}
 
 	/**
