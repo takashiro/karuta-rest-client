@@ -14,18 +14,6 @@ const api = {
 
 const storage = new ScopedStorage('abc', api);
 
-it('has no length', () => {
-	expect(() => storage.length).toThrowError('Method not implemented');
-});
-
-it('cannot iterate keys', () => {
-	expect(() => storage.key()).toThrowError('Method not implemented');
-});
-
-it('cannot clear items', () => {
-	expect(() => storage.clear()).toThrowError('Method not implemented');
-});
-
 it('returns underlying API', () => {
 	expect(storage.getApi()).toBe(api);
 });

@@ -6,6 +6,7 @@ import {
 
 import Client, { FetchApi } from '../src/Client';
 import ClientContext from '../src/ClientContext';
+import ClientStorage from '../src/ClientStorage';
 
 jest.mock('../src/Client');
 jest.mock('../src/ScopedStorage');
@@ -20,7 +21,7 @@ const storage = {
 	getItem: jest.fn(),
 	setItem: jest.fn(),
 	removeItem: jest.fn(),
-} as unknown as jest.Mocked<Storage>;
+} as unknown as jest.Mocked<ClientStorage>;
 context.setStorage(storage);
 
 it('can return its storage', () => {

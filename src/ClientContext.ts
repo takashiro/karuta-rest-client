@@ -1,4 +1,5 @@
 import Client from './Client';
+import ClientStorage from './ClientStorage';
 
 export type PropertyParser<PropertyType> = (raw: string) => PropertyType;
 
@@ -9,7 +10,7 @@ export type PropertyParser<PropertyType> = (raw: string) => PropertyType;
 export default class ClientContext {
 	protected readonly client: Client;
 
-	protected storage?: Storage;
+	protected storage?: ClientStorage;
 
 	/**
 	 * Create a client context.
@@ -20,9 +21,9 @@ export default class ClientContext {
 	}
 
 	/**
-	 * @returns local storage to save cache.
+	 * @returns a storage to save cache.
 	 */
-	getStorage(): Storage | undefined {
+	getStorage(): ClientStorage | undefined {
 		return this.storage;
 	}
 
@@ -30,7 +31,7 @@ export default class ClientContext {
 	 * Sets a storage to save cache.
 	 * @param storage data storage
 	 */
-	setStorage(storage: Storage) {
+	setStorage(storage: ClientStorage) {
 		this.storage = storage;
 	}
 

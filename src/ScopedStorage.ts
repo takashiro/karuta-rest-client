@@ -1,4 +1,6 @@
-export default class ScopedStorage implements Storage {
+import ClientStorage from './ClientStorage';
+
+export default class ScopedStorage implements ClientStorage {
 	protected readonly prefix: string;
 
 	protected readonly api: Storage;
@@ -10,18 +12,6 @@ export default class ScopedStorage implements Storage {
 
 	getApi(): Storage {
 		return this.api;
-	}
-
-	get length(): number { // eslint-disable-line class-methods-use-this
-		throw new Error('Method not implemented');
-	}
-
-	key(): string | null { // eslint-disable-line class-methods-use-this
-		throw new Error('Method not implemented.');
-	}
-
-	clear(): void { // eslint-disable-line class-methods-use-this
-		throw new Error('Method not implemented.');
 	}
 
 	getItem(key: string): string | null {
