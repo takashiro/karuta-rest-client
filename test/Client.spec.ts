@@ -67,3 +67,50 @@ it('patches root context by default', async () => {
 	await client.patch();
 	expect(fetch).toBeCalledWith('http://example.com/api', { method: 'PATCH' });
 });
+
+it('sends a request in JSON format', async () => {
+	const query = { x: '3', y: false, z: 4 };
+	const data = { a: 1, b: 2 };
+	await client.post('room', { query, data });
+	expect(fetch).toBeCalledWith('http://example.com/api/room?x=3&y=false&z=4', {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	});
+});
+
+it('sends a JSON request with Headers', async () => {
+	const data = { a: 1 };
+	const headers = new Headers({ 'accept-language': 'zh-CN' });
+	await client.patch('room', { data, headers });
+	expect(fetch).toBeCalledWith('http://example.com/api/room', {
+		method: 'PATCH',
+		headers: new Headers({
+			'accept-language': 'zh-CN',
+			'content-type': 'application/json',
+		}),
+		body: JSON.stringify(data),
+	});
+});
+
+it('sends a JSON request with array-like headers', async () => {
+	const data = { a: 1 };
+	const headers: [string, string][] = [['accept-language', 'zh-CN']];
+	await client.patch('room', { data, headers });
+	expect(fetch).toBeCalledWith('http://example.com/api/room', {
+		method: 'PATCH',
+		headers: [
+			['accept-language', 'zh-CN'],
+			['content-type', 'application/json'],
+		],
+		body: JSON.stringify(data),
+	});
+});
+
+it('sends a request with URLSearchParams', async () => {
+	const query = new URLSearchParams({ a: 'b' });
+	await client.get('players', { query });
+	expect(fetch).toBeCalledWith('http://example.com/api/players?a=b', { method: 'GET' });
+});

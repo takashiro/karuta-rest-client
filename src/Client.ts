@@ -9,6 +9,73 @@ export const enum HttpMethod {
 	Patch = 'PATCH',
 }
 
+export type Query = Record<string, string | number | boolean> | URLSearchParams;
+
+export interface RequestOptions extends Omit<RequestInit, 'method'> {
+  /**
+   * The parameters here will be appended to the context path.
+   */
+  query?: Query;
+
+  /**
+   * The object here will be serialized into JSON format.
+   * (This implies Content-Type: application/json)
+   */
+  data?: unknown;
+}
+
+function createQuery(query?: Query): string {
+  if (!query) {
+    return '';
+  }
+
+  if (query instanceof URLSearchParams) {
+    return query.toString();
+  }
+
+  const init: Record<string, string> = Object.entries(query)
+    .map(([k, v]) => ([k, typeof v === 'string' ? v : String(v)]))
+    .reduce((prev, [k, v]) => {
+      prev[k] = v;
+      return prev;
+    }, {} as Record<string, string>);
+  return new URLSearchParams(init).toString();
+}
+
+function addHeader(headers: HeadersInit, field: string, value: string): void {
+  if (headers instanceof Headers) {
+    headers.append(field, value);
+  } else if (Array.isArray(headers)) {
+    headers.push([field, value]);
+  } else {
+    headers[field] = value;
+  }
+}
+
+function createOptions(method: HttpMethod, options?: RequestOptions): RequestInit {
+  if (!options) {
+    return { method };
+  }
+
+  const {
+    query,
+    data,
+    ...otherOptions
+  } = options;
+
+  const init: RequestInit = { ...otherOptions };
+  init.method = method;
+
+  if (data) {
+    const { headers = {} } = init;
+    addHeader(headers, 'content-type', 'application/json');
+    init.headers = headers;
+    init.body = JSON.stringify(data);
+  }
+
+  return init;
+}
+
 /**
  * A RESTful Client.
  */
@@ -33,7 +100,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	get(context?: string, options?: RequestInit): Promise<Response> {
+	get(context?: string, options?: RequestOptions): Promise<Response> {
 		return this.request(HttpMethod.Get, context, options);
 	}
 
@@ -43,7 +110,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	head(context?: string, options?: RequestInit): Promise<Response> {
+	head(context?: string, options?: RequestOptions): Promise<Response> {
 		return this.request(HttpMethod.Head, context, options);
 	}
 
@@ -53,7 +120,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	post(context?: string, options?: RequestInit): Promise<Response> {
+	post(context?: string, options?: RequestOptions): Promise<Response> {
 		return this.request(HttpMethod.Post, context, options);
 	}
 
@@ -63,7 +130,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	delete(context?: string, options?: RequestInit): Promise<Response> {
+	delete(context?: string, options?: RequestOptions): Promise<Response> {
 		return this.request(HttpMethod.Delete, context, options);
 	}
 
@@ -73,7 +140,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	put(context?: string, options?: RequestInit): Promise<Response> {
+	put(context?: string, options?: RequestOptions): Promise<Response> {
 		return this.request(HttpMethod.Put, context, options);
 	}
 
@@ -83,7 +150,7 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	patch(context?: string, options?: RequestInit): Promise<Response> {
+	patch(context?: string, options?: RequestOptions): Promise<Response> {
 		return this.request(HttpMethod.Patch, context, options);
 	}
 
@@ -94,12 +161,10 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	request(method: HttpMethod, context?: string, options?: RequestInit): Promise<Response> {
-		const url = this.getContext(context);
-		const init: RequestInit = {
-			...options,
-			method,
-		};
+	request(method: HttpMethod, context?: string, options?: RequestOptions): Promise<Response> {
+    const query = createQuery(options?.query);
+		const url = this.getContext(context) + (query ? `?${query}` : '');
+    const init = createOptions(method, options);
 		return this.fetch(url, init);
 	}
 
@@ -112,7 +177,7 @@ export default class Client {
 		return new Client(this.getContext(context), this.fetch);
 	}
 
-  protected getContext(context?: string): string {
+  protected getContext(context?: string, options?: RequestOptions): string {
     if (context) {
       return `${this.rootUrl}/${context}`;
     }
