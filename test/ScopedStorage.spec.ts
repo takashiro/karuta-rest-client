@@ -4,7 +4,7 @@ import {
 	expect,
 } from '@jest/globals';
 
-import ScopedStorage from '../src/ScopedStorage';
+import ScopedStorage from '@karuta/rest-client/ScopedStorage';
 
 const api = {
 	getItem: jest.fn(),

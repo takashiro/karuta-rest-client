@@ -1,0 +1,26 @@
+{
+  "name": "@karuta-test/rest-client",
+  "version": "0.1.0",
+  "description": "A Client to communicate with RESTful APIs",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takashiro/karuta-rest-client.git"
+  },
+  "keywords": [
+    "RESTful",
+    "client"
+  ],
+  "author": "Kazuichi Takashiro",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/takashiro/karuta-rest-client/issues"
+  },
+  "homepage": "https://github.com/takashiro/karuta-rest-client#readme",
+  "dependencies": {
+    "@jest/globals": "^29.2.1",
+    "@karuta/rest-client": "file:../src",
+    "jest": "^29.2.1",
+    "ts-jest": "^29.0.3"
+  }
+}
