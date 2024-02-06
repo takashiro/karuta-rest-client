@@ -4,12 +4,12 @@ import {
 	expect,
 } from '@jest/globals';
 
-import Client, { FetchApi } from '@karuta/rest-client/Client';
-import ClientContext from '@karuta/rest-client/ClientContext';
-import ClientStorage from '@karuta/rest-client/ClientStorage';
+import Client, { FetchApi } from '../src/Client.js';
+import ClientContext from '../src/ClientContext.js';
+import ClientStorage from '../src/ClientStorage.js';
 
-jest.mock('@karuta/rest-client/Client');
-jest.mock('@karuta/rest-client/ScopedStorage');
+jest.mock('../src/Client');
+jest.mock('../src/ScopedStorage');
 
 const MockedClient = jest.mocked(Client);
 

@@ -1,13 +1,12 @@
 {
-	"extends": "./tsconfig.json",
 	"compilerOptions": {
+		"outDir": "dist",
+		"target": "ES2022",
+		"module": "Node16",
+		"moduleResolution": "Node16",
+		"esModuleInterop": true,
+		"strict": true,
+		"declaration": true,
 		"allowJs": true
-	},
-	"include": [
-		".eslintrc.js",
-		"jest.config.js",
-		"src",
-		"test",
-		"test/.eslintrc.js"
-	]
+	}
 }

@@ -2,13 +2,14 @@
   "name": "@karuta/rest-client",
   "version": "0.4.0",
   "description": "A Client to communicate with RESTful APIs",
+  "type": "module",
   "main": "dist",
   "scripts": {
     "build": "tsc",
     "debug": "tsc --incremental --sourceMap",
     "test": "npm run lint && npm run jest",
     "lint": "eslint --ext=js,ts .",
-    "jest": "jest --coverage"
+    "jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",

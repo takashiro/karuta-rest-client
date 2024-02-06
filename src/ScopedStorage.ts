@@ -1,4 +1,4 @@
-import ClientStorage from './ClientStorage';
+import ClientStorage from './ClientStorage.js';
 
 export default class ScopedStorage implements ClientStorage {
 	protected readonly prefix: string;

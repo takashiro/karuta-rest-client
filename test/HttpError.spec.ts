@@ -1,5 +1,5 @@
 import { it, expect } from '@jest/globals';
-import HttpError from '@karuta/rest-client/HttpError';
+import HttpError from '../src/HttpError.js';
 
 it('has a status code and a message', () => {
 	const message = 'The room is not found.';

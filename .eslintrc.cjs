@@ -17,14 +17,8 @@ module.exports = {
   },
   rules: {
 		'consistent-return': 'off',
-		'import/extensions': [
-			'error',
-			'ignorePackages',
-			{
-				ts: 'never',
-				js: 'never',
-			},
-		],
+		'import/extensions': 'off',
+		'import/no-unresolved': 'off',
     indent: 'off',
     'linebreak-style': 'off',
 		'no-continue': 'off',
@@ -38,14 +32,4 @@ module.exports = {
     'no-tabs': 'off',
 		'no-unused-vars': 'off',
   },
-	settings: {
-		'import/resolver': {
-			node: {
-				extensions: [
-					'.ts',
-					'.js',
-				],
-			},
-		},
-	},
 };

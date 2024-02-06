@@ -5,7 +5,7 @@ import {
 	afterEach,
 } from '@jest/globals';
 
-import Client, { FetchApi } from '@karuta/rest-client/Client';
+import Client, { FetchApi } from '../src/Client.js';
 
 const fetch = jest.fn();
 const client = new Client('http://example.com/api', fetch as unknown as FetchApi);

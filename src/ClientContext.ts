@@ -1,5 +1,5 @@
-import Client from './Client';
-import ClientStorage from './ClientStorage';
+import Client from './Client.js';
+import ClientStorage from './ClientStorage.js';
 
 export type PropertyParser<PropertyType> = (raw: string) => PropertyType;
 
