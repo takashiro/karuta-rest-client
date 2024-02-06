@@ -8,5 +8,11 @@
 		"strict": true,
 		"declaration": true,
 		"allowJs": true
-	}
+	},
+	"include": [
+		"src",
+		"test",
+		"*.js",
+		"*.cjs"
+	]
 }

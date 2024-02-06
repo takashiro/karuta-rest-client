@@ -27,6 +27,7 @@ jobs:
         name: Publish
         run: |
           cp package.json dist/
+          cp LICENSE dist/
           cd dist
           npm pkg delete devDependencies
           npm pkg delete scripts
