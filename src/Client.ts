@@ -52,18 +52,8 @@ function addHeader(headers: HeadersInit, field: string, value: string): void {
   }
 }
 
-function createOptions(method: HttpMethod, options?: RequestOptions): RequestInit {
-  if (!options) {
-    return { method };
-  }
-
-  const {
-    query,
-    data,
-    ...otherOptions
-  } = options;
-
-  const init: RequestInit = { ...otherOptions };
+function createOptions(method: HttpMethod, { data, ...options }: Omit<RequestOptions, 'query'>): RequestInit {
+  const init: RequestInit = { ...options };
   init.method = method;
 
   if (data) {
@@ -161,9 +151,13 @@ export default class Client {
    * @param options request options
    * @returns HTTP response
    */
-	request(method: HttpMethod, context?: string, options?: RequestOptions): Promise<Response> {
-    const query = createQuery(options?.query);
-		const url = this.getContext(context) + (query ? `?${query}` : '');
+	request(
+    method: HttpMethod,
+    context?: string,
+    { query, ...options }: RequestOptions = {},
+  ): Promise<Response> {
+    const queryStr = createQuery(query);
+		const url = this.getContext(context) + (queryStr ? `?${queryStr}` : '');
     const init = createOptions(method, options);
 		return this.fetch(url, init);
 	}
@@ -177,7 +171,7 @@ export default class Client {
 		return new Client(this.getContext(context), this.fetch);
 	}
 
-  protected getContext(context?: string, options?: RequestOptions): string {
+  protected getContext(context?: string): string {
     if (context) {
       return `${this.rootUrl}/${context}`;
     }
